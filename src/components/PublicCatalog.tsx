@@ -505,6 +505,9 @@ export const PublicCatalog: React.FC<PublicCatalogProps> = ({
                                 product.images.length > 0
                                     ? product.images[0]
                                     : "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=800&auto=format&fit=crop&q=80";
+                            
+                           const badgeStyle =
+                               "inline-flex items-center justify-center text-xs font-semibold px-2 py-1 md:px-3 rounded-full backdrop-blur-md border border-white/10";
 
                             return (
                                 <article
@@ -522,31 +525,37 @@ export const PublicCatalog: React.FC<PublicCatalogProps> = ({
                                             className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
                                             loading="lazy"
                                         />
-
                                         {/* Stock Availability Badge (NO QUANTITY NUMBERS EXPOSED) */}
+
                                         <div className="absolute top-3.5 left-3.5 flex flex-col gap-1.5 z-10">
                                             {isOutOfStock ? (
-                                                <span className="bg-stone-900/90 dark:bg-black/90 backdrop-blur-md text-stone-300 text-[11px] font-medium px-3 py-1 rounded-full uppercase tracking-wider border border-stone-700">
-                                                    Out of Stock
+                                                <span
+                                                    className={`${badgeStyle} bg-emerald-800/80 text-emerald-100`}
+                                                >
+                                                    Sold Out
                                                 </span>
                                             ) : isLowStock ? (
-                                                <span className="bg-amber-600/95 dark:bg-amber-500/95 backdrop-blur-md text-white dark:text-stone-950 text-[11px] font-bold px-3 py-1 rounded-full shadow-sm">
-                                                    Limited Stock
+                                                <span
+                                                    className={`${badgeStyle} bg-emerald-800/80 text-emerald-100`}
+                                                >
+                                                    Limited
                                                 </span>
                                             ) : (
-                                                <span className="bg-emerald-950/80 dark:bg-emerald-900/80 backdrop-blur-md text-emerald-200 text-[11px] font-medium px-3 py-1 rounded-full border border-emerald-700/50">
+                                                <span
+                                                    className={`${badgeStyle} bg-emerald-800/80 text-emerald-100`}
+                                                >
                                                     In Stock
                                                 </span>
                                             )}
                                         </div>
-
                                         {/* Category Pill */}
                                         <div className="absolute top-3.5 right-3.5 z-10">
-                                            <span className="bg-stone-900/75 dark:bg-black/80 backdrop-blur-md text-stone-100 text-[11px] font-medium px-3 py-1 rounded-full border border-white/10">
+                                            <span
+                                                className={`${badgeStyle} bg-stone-900/75 dark:bg-black/80 text-stone-100`}
+                                            >
                                                 {product.category}
                                             </span>
                                         </div>
-
                                         {/* Quick View overlay on hover */}
                                         <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-stone-950/90 via-stone-950/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-between text-white text-xs">
                                             <span className="flex items-center gap-1.5 font-medium">
@@ -590,7 +599,7 @@ export const PublicCatalog: React.FC<PublicCatalogProps> = ({
                                                     onClick={(e) =>
                                                         handleCopyCode(
                                                             e,
-                                                            product.codeNo,
+                                                            product.codeNo
                                                         )
                                                     }
                                                     className="inline-flex shrink-0 items-center gap-1 text-[10px] sm:text-[11px] font-medium text-amber-700 dark:text-amber-400 hover:text-amber-900 dark:hover:text-amber-200 transition py-0.5 px-1 rounded cursor-pointer"
@@ -620,7 +629,7 @@ export const PublicCatalog: React.FC<PublicCatalogProps> = ({
                                                 </span>
                                                 <span className="text-base sm:text-lg font-bold text-stone-950 dark:text-stone-50 font-sans tracking-tight">
                                                     {formatPrice(
-                                                        product.pricePerUnit,
+                                                        product.pricePerUnit
                                                     )}
                                                 </span>
                                             </div>
@@ -630,7 +639,7 @@ export const PublicCatalog: React.FC<PublicCatalogProps> = ({
                                                     onClick={(e) => {
                                                         e.stopPropagation();
                                                         onSelectProduct(
-                                                            product,
+                                                            product
                                                         );
                                                     }}
                                                     className="min-w-0 px-1.5 sm:px-2.5 py-2 rounded-xl bg-stone-100 dark:bg-stone-800 hover:bg-stone-200 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 text-[10px] sm:text-xs font-semibold transition-all shadow-2xs cursor-pointer"
@@ -645,7 +654,7 @@ export const PublicCatalog: React.FC<PublicCatalogProps> = ({
                                                     onClick={(e) =>
                                                         handleAddToCart(
                                                             e,
-                                                            product,
+                                                            product
                                                         )
                                                     }
                                                     className="min-w-0 px-1.5 sm:px-2.5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 disabled:bg-stone-200 disabled:text-stone-400 dark:disabled:bg-stone-800 dark:disabled:text-stone-500 text-stone-950 text-[10px] sm:text-xs font-bold transition-all flex items-center justify-center gap-1 shadow-2xs cursor-pointer disabled:cursor-not-allowed"
