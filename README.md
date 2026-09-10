@@ -169,9 +169,6 @@ TURSO_AUTH_TOKEN=your_turso_token
 # Required in production for stable admin sessions.
 JWT_SECRET=your_long_random_secret
 
-# Optional application metadata / AI Studio variables.
-GEMINI_API_KEY=your_gemini_key
-APP_URL=https://your-public-app-url.example
 ```
 
 Never commit `.env`, database tokens, JWT secrets, or other credentials.
