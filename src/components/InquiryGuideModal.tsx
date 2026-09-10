@@ -1,3 +1,5 @@
+"use client";
+
 import React from 'react';
 import { X, Tag, Sparkles, CheckCircle2, AlertCircle } from 'lucide-react';
 

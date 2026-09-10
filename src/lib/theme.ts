@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect, useCallback } from 'react';
 
 export type ThemeMode = 'system' | 'light' | 'dark';

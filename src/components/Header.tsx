@@ -1,3 +1,5 @@
+"use client";
+
 import React from 'react';
 import { ShieldCheck, LogOut, PhoneCall, Store, ShoppingBag } from 'lucide-react';
 import { User } from '../types';

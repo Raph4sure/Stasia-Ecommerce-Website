@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useEffect, useCallback } from 'react';
 import { Header } from './components/Header';
 import { PublicCatalog } from './components/PublicCatalog';
@@ -23,7 +25,7 @@ export default function App() {
 
   // Navigation path state
   const [currentPath, setCurrentPath] = useState<string>(() => {
-    return window.location.pathname || '/';
+    return typeof window !== 'undefined' ? window.location.pathname || '/' : '/';
   });
 
   // Authentication state

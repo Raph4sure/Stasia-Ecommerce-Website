@@ -4,10 +4,12 @@ const TOKEN_KEY = "boutique_auth_token";
 const USER_KEY = "boutique_user";
 
 export function getStoredToken(): string | null {
+    if (typeof window === "undefined") return null;
     return localStorage.getItem(TOKEN_KEY);
 }
 
 export function getStoredUser(): User | null {
+    if (typeof window === "undefined") return null;
     const data = localStorage.getItem(USER_KEY);
     if (!data) return null;
     try {
@@ -18,11 +20,13 @@ export function getStoredUser(): User | null {
 }
 
 export function setStoredSession(token: string, user: User) {
+    if (typeof window === "undefined") return;
     localStorage.setItem(TOKEN_KEY, token);
     localStorage.setItem(USER_KEY, JSON.stringify(user));
 }
 
 export function clearStoredSession() {
+    if (typeof window === "undefined") return;
     localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem(USER_KEY);
 }

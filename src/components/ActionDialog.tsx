@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { AlertTriangle, CheckCircle2, X } from "lucide-react";
 

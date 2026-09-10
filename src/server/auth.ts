@@ -1,8 +1,7 @@
-import { Request, Response, NextFunction } from 'express';
+import { NextRequest } from 'next/server';
 import crypto from 'crypto';
 import { User } from '../types';
 
-// Persistent secret for HMAC signing so sessions survive server restarts and dev reloads
 const JWT_SECRET = process.env.JWT_SECRET || 'boutique-hmac-sha256-auth-secret-key-2026';
 const revokedTokens = new Set<string>();
 
@@ -55,36 +54,8 @@ export function revokeToken(token?: string) {
   if (token) revokedTokens.add(token);
 }
 
-export interface AuthenticatedRequest extends Request {
-  user?: User;
-}
-
-export function requireAuth(req: AuthenticatedRequest, res: Response, next: NextFunction) {
-  const authHeader = req.headers.authorization;
+export function getAuthUser(req: NextRequest): User | null {
+  const authHeader = req.headers.get('authorization');
   const token = authHeader?.startsWith('Bearer ') ? authHeader.substring(7) : undefined;
-  const user = getUserFromToken(token);
-
-  if (!user) {
-    return res.status(401).json({ error: 'Unauthorized. Please sign in.' });
-  }
-
-  req.user = user;
-  next();
-}
-
-export function requireSuperAdmin(req: AuthenticatedRequest, res: Response, next: NextFunction) {
-  const authHeader = req.headers.authorization;
-  const token = authHeader?.startsWith('Bearer ') ? authHeader.substring(7) : undefined;
-  const user = getUserFromToken(token);
-
-  if (!user) {
-    return res.status(401).json({ error: 'Unauthorized. Please sign in.' });
-  }
-
-  if (user.role !== 'SUPER_ADMIN') {
-    return res.status(403).json({ error: 'Forbidden. Super Admin privileges required.' });
-  }
-
-  req.user = user;
-  next();
+  return getUserFromToken(token);
 }

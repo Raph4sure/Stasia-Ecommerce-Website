@@ -1,3 +1,5 @@
+"use client";
+
 import React from 'react';
 import { Sun, Moon, Laptop } from 'lucide-react';
 import { ThemeMode } from '../lib/theme';
