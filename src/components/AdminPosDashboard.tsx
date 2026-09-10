@@ -167,11 +167,9 @@ export const AdminPosDashboard: React.FC<AdminPosDashboardProps> = ({
         setIsLoadingSavedOrder(true);
         setSaleError(null);
         try {
-            const savedOrder = (
-                await fetchWithAuth(
-                    `/api/saved-carts/${encodeURIComponent(code)}`
-                )
-            ).cart;
+            const savedOrder = await fetchWithAuth(
+                `/api/saved-carts/${encodeURIComponent(code)}`
+            );
             if (savedOrder.status !== "PENDING") {
                 throw new Error(
                     `Order ${
@@ -234,10 +232,10 @@ export const AdminPosDashboard: React.FC<AdminPosDashboardProps> = ({
                 quantity: item.quantity,
             }));
 
-            const res = await fetchWithAuth("/api/sales/process", {
+            const res = await fetchWithAuth("/api/sales", {
                 method: "POST",
                 body: JSON.stringify({
-                    cartItems: cartItemsPayload,
+                    items: cartItemsPayload,
                     orderCode: loadedOrderCode,
                 }),
             });
@@ -384,7 +382,7 @@ export const AdminPosDashboard: React.FC<AdminPosDashboardProps> = ({
                                 if (e.key === "Enter") handleLoadSavedOrder();
                             }}
                             placeholder="e.g. ST-4892"
-                              className="min-w-0 flex-1 rounded-xl border border-amber-300 bg-white dark:bg-stone-800 px-3 py-2.5 text-sm font-mono uppercase tracking-wider text-stone-900 dark:text-stone-100 placeholder:text-stone-400 outline-none focus:ring-2 focus:ring-amber-500/30"
+                            className="min-w-0 flex-1 rounded-xl border border-amber-300 bg-white dark:bg-stone-800 px-3 py-2.5 text-sm font-mono uppercase tracking-wider text-stone-900 dark:text-stone-100 placeholder:text-stone-400 outline-none focus:ring-2 focus:ring-amber-500/30"
                         />
                         <button
                             id="btn-load-saved-order"
@@ -434,7 +432,7 @@ export const AdminPosDashboard: React.FC<AdminPosDashboardProps> = ({
                                     onChange={(e) =>
                                         setSearchTerm(e.target.value)
                                     }
-                                      className="w-full pl-10 pr-4 py-2.5 bg-stone-50 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded-xl text-xs sm:text-sm text-stone-900 dark:text-stone-100 placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-amber-500/20"
+                                    className="w-full pl-10 pr-4 py-2.5 bg-stone-50 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded-xl text-xs sm:text-sm text-stone-900 dark:text-stone-100 placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-amber-500/20"
                                 />
                             </div>
 

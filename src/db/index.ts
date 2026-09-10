@@ -606,5 +606,6 @@ export async function initializeDatabase() {
         }
     } catch (err) {
         console.error("Database initialization error:", err);
+        throw err;
     }
 }
