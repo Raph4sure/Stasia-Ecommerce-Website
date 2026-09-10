@@ -108,26 +108,37 @@ export async function initializeDatabase() {
 
         const userCount = Number(existingUsers.rows[0]?.count || 0);
 
-        const superAdminEmail = process.env.SUPER_ADMIN_EMAIL || "raph4sure007@gmail.com";
+        const superAdminEmail =
+            process.env.SUPER_ADMIN_EMAIL || "raph4sure007@gmail.com";
         const superAdminPassword = process.env.SUPER_ADMIN_PASSWORD;
         const salesStaffEmail = process.env.SALES_STAFF_EMAIL;
         const salesStaffPassword = process.env.SALES_STAFF_PASSWORD;
 
         if (userCount === 0) {
             if (!superAdminPassword) {
-                throw new Error("SUPER_ADMIN_PASSWORD must be set before initializing an empty database.");
+                throw new Error(
+                    "SUPER_ADMIN_PASSWORD must be set before initializing an empty database."
+                );
             }
 
             const now = new Date().toISOString();
             await client.execute({
                 sql: `INSERT INTO users (email, password_hash, role, created_at) VALUES (?, ?, 'SUPER_ADMIN', ?);`,
-                args: [superAdminEmail.trim().toLowerCase(), await bcrypt.hash(superAdminPassword, 10), now],
+                args: [
+                    superAdminEmail.trim().toLowerCase(),
+                    await bcrypt.hash(superAdminPassword, 10),
+                    now,
+                ],
             });
 
             if (salesStaffEmail && salesStaffPassword) {
                 await client.execute({
                     sql: `INSERT INTO users (email, password_hash, role, created_at) VALUES (?, ?, 'ADMIN', ?);`,
-                    args: [salesStaffEmail.trim().toLowerCase(), await bcrypt.hash(salesStaffPassword, 10), now],
+                    args: [
+                        salesStaffEmail.trim().toLowerCase(),
+                        await bcrypt.hash(salesStaffPassword, 10),
+                        now,
+                    ],
                 });
             }
 

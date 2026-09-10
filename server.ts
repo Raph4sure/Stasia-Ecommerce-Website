@@ -438,11 +438,9 @@ export async function startServer() {
                     images !== undefined &&
                     (!Array.isArray(images) || images.length > 10)
                 ) {
-                    return res
-                        .status(400)
-                        .json({
-                            error: "A product can have at most 10 images.",
-                        });
+                    return res.status(400).json({
+                        error: "A product can have at most 10 images.",
+                    });
                 }
 
                 const cleanCodeNo = String(codeNo).trim().toUpperCase();
@@ -582,11 +580,9 @@ export async function startServer() {
                     images !== undefined &&
                     (!Array.isArray(images) || images.length > 10)
                 ) {
-                    return res
-                        .status(400)
-                        .json({
-                            error: "A product can have at most 10 images.",
-                        });
+                    return res.status(400).json({
+                        error: "A product can have at most 10 images.",
+                    });
                 }
 
                 if (Object.keys(updates).length > 0) {
