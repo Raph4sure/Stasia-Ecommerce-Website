@@ -36,7 +36,8 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
             {/* Luxury Brand Crest / Emblem */}
             <div className={`relative ${iconDimensions} shrink-0`}>
                 {/* Glow backdrop in dark mode */}
-                <div className="absolute inset-0 rounded-2xl bg-amber-500/20 dark:bg-amber-400/25 blur-sm" />
+                <div className="" />
+                {/* <div className="absolute inset-0 rounded-2xl bg-amber-500/20 dark:bg-amber-400/25 blur-sm" /> */}
 
                 {/* SVG Luxury Crest Seal */}
                 <img
