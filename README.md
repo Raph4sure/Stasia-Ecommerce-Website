@@ -1,6 +1,6 @@
-# Stasia Elegant Fabrique
+# Stasia Elegant Fabric
 
-Stasia Elegant Fabrique is a boutique ecommerce and point-of-sale application for luxury fabrics, clothing, wrappers, and accessories.
+Stasia Elegant Fabric is a boutique ecommerce and point-of-sale application for luxury fabrics, clothing, wrappers, and accessories.
 
 The application provides a public product catalog for visitors and a protected staff terminal for inventory, saved customer orders, sales, staff accounts, and database administration.
 

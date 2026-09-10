@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Stasia Elegant Fabrique - Luxury Fabrics & Fashion Wears",
+  title: "Stasia Elegant Fabric - Luxury Fabrics & Fashion Wears",
   description: "Luxury fabrics, clothing, wrappers, and accessories boutique store.",
   icons: {
     icon: "/stasia_logo.png",

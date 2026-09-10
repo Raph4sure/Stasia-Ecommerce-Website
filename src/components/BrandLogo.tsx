@@ -153,7 +153,7 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
           <span
             className={`font-serif tracking-wider font-bold text-stone-900 dark:text-stone-100 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors whitespace-nowrap ${titleSize}`}
           >
-            <span className="hidden sm:inline">Stasia </span>Elegant Fabrique
+            <span className="hidden sm:inline">Stasia </span>Elegant Fabric
           </span>
         </div>
 

@@ -307,7 +307,7 @@ export const PublicCatalog: React.FC<PublicCatalogProps> = ({
                 <div>
                     <div className="flex items-center gap-2.5">
                         <h1 className="font-serif text-xl sm:text-2xl font-bold tracking-tight text-stone-900 dark:text-stone-50">
-                            Stasia Elegant Fabrique
+                            Stasia Elegant Fabric
                         </h1>
                         <span className="text-xs font-mono px-2.5 py-0.5 rounded-full bg-amber-100/80 dark:bg-amber-950/70 text-amber-800 dark:text-amber-300 border border-amber-300/50 dark:border-amber-700/50 font-medium">
                             Store Catalog
@@ -719,7 +719,7 @@ export const PublicCatalog: React.FC<PublicCatalogProps> = ({
                                 <Sparkles className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
                                 <span>
                                     You have viewed all items in this collection
-                                    • Stasia Elegant Fabrique
+                                    • Stasia Elegant Fabric
                                 </span>
                             </span>
                         </div>

@@ -29,7 +29,7 @@ export const InquiryGuideModal: React.FC<InquiryGuideModalProps> = ({ isOpen, on
           How to Order with Item Code No.
         </h3>
         <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-400 mb-6 leading-relaxed">
-          At <strong className="text-stone-900 dark:text-stone-100">Stasia Elegant Fabrique</strong>, each piece of clothing, wrapper, and luxury fabric has a unique <strong className="text-amber-700 dark:text-amber-300 font-mono">Code No.</strong> so you can easily order or buy directly from us.
+          At <strong className="text-stone-900 dark:text-stone-100">Stasia Elegant Fabric</strong>, each piece of clothing, wrapper, and luxury fabric has a unique <strong className="text-amber-700 dark:text-amber-300 font-mono">Code No.</strong> so you can easily order or buy directly from us.
         </p>
 
         <div className="space-y-3.5 text-xs sm:text-sm text-stone-700 dark:text-stone-300 mb-6">

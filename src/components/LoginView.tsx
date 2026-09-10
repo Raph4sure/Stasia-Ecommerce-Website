@@ -59,7 +59,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess, onCancel }
             Staff Portal Access
           </h2>
           <p className="text-xs text-stone-400 mt-1 font-sans">
-            Stasia Elegant Fabrique • Staff & Inventory Terminal
+            Stasia Elegant Fabric • Staff & Inventory Terminal
           </p>
         </div>
 

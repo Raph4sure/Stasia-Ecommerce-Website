@@ -878,7 +878,7 @@ export const AdminPosDashboard: React.FC<AdminPosDashboardProps> = ({
                                 <CheckCircle2 className="w-7 h-7" />
                             </div>
                             <div className="text-[10px] font-mono uppercase tracking-widest text-amber-700 dark:text-amber-400 font-semibold mb-0.5">
-                                Stasia Elegant Fabrique
+                                Stasia Elegant Fabric
                             </div>
                             <h3 className="font-serif text-xl font-bold text-stone-900 dark:text-stone-50">
                                 Official Sales Receipt

@@ -81,7 +81,7 @@ export const CartDrawer: React.FC = () => {
         const SELLER_PHONE_NUMBER = "2348131115714";
 
         const text = encodeURIComponent(
-            `Hello Stasia Elegant Fabrique! I generated an Order Code: *${code}* for ${count} item(s) totaling ${formatPrice(
+            `Hello Stasia Elegant Fabric! I generated an Order Code: *${code}* for ${count} item(s) totaling ${formatPrice(
                 total
             )}.\n\nPlease load my order in your store register to confirm availability. Thank you!`
         );

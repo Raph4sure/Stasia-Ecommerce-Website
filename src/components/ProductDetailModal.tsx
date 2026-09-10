@@ -229,7 +229,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                                     product.codeNo
                                 )}%20-%20${encodeURIComponent(
                                     product.title
-                                )}&body=Hello%20Stasia%20Elegant%20Fabrique,%0A%0AI%20would%20like%20to%20order%20or%20inquire%20about%20item%20code:%20${encodeURIComponent(
+                                )}&body=Hello%20Stasia%20Elegant%20Fabric,%0A%0AI%20would%20like%20to%20order%20or%20inquire%20about%20item%20code:%20${encodeURIComponent(
                                     product.codeNo
                                 )}%20(${encodeURIComponent(
                                     product.title

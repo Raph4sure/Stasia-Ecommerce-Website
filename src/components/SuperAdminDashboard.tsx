@@ -819,7 +819,7 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({
                         </span>
                     </div>
                     <h1 className="font-serif text-2xl sm:text-3xl font-bold text-stone-900 dark:text-stone-50">
-                        Stasia Elegant Fabrigue • Executive Terminal
+                        Stasia Elegant Fabric • Executive Terminal
                     </h1>
                 </div>
 
