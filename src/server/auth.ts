@@ -12,7 +12,7 @@ export function generateToken(user: User): string {
     email: user.email,
     role: user.role,
     createdAt: user.createdAt,
-    exp: Date.now() + 14 * 24 * 60 * 60 * 1000, // 14 days expiration
+    exp: Date.now() + 0.5 * 24 * 60 * 60 * 1000, // 12 hours expiration
   };
   const payloadStr = Buffer.from(JSON.stringify(payload)).toString('base64url');
   const signature = crypto.createHmac('sha256', JWT_SECRET).update(payloadStr).digest('base64url');

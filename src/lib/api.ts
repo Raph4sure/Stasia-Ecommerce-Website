@@ -1,87 +1,95 @@
-import { Product, Sale, User } from '../types';
+import { Product, Sale, User } from "../types";
 
-const TOKEN_KEY = 'boutique_auth_token';
-const USER_KEY = 'boutique_user';
+const TOKEN_KEY = "boutique_auth_token";
+const USER_KEY = "boutique_user";
 
 export function getStoredToken(): string | null {
-  return localStorage.getItem(TOKEN_KEY);
+    return localStorage.getItem(TOKEN_KEY);
 }
 
 export function getStoredUser(): User | null {
-  const data = localStorage.getItem(USER_KEY);
-  if (!data) return null;
-  try {
-    return JSON.parse(data);
-  } catch {
-    return null;
-  }
+    const data = localStorage.getItem(USER_KEY);
+    if (!data) return null;
+    try {
+        return JSON.parse(data);
+    } catch {
+        return null;
+    }
 }
 
 export function setStoredSession(token: string, user: User) {
-  localStorage.setItem(TOKEN_KEY, token);
-  localStorage.setItem(USER_KEY, JSON.stringify(user));
+    localStorage.setItem(TOKEN_KEY, token);
+    localStorage.setItem(USER_KEY, JSON.stringify(user));
 }
 
 export function clearStoredSession() {
-  localStorage.removeItem(TOKEN_KEY);
-  localStorage.removeItem(USER_KEY);
+    localStorage.removeItem(TOKEN_KEY);
+    localStorage.removeItem(USER_KEY);
 }
 
 export function formatPrice(cents: number): string {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-  }).format(cents / 100);
+    return new Intl.NumberFormat("en-NG", {
+        style: "currency",
+        currency: "NGN",
+    }).format(cents / 100);
 }
 
 export function formatDateTime(isoString: string): string {
-  try {
-    const d = new Date(isoString);
-    return d.toLocaleString('en-US', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    });
-  } catch {
-    return isoString;
-  }
+    try {
+        const d = new Date(isoString);
+        return d.toLocaleString("en-US", {
+            month: "short",
+            day: "numeric",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+        });
+    } catch {
+        return isoString;
+    }
 }
 
 export async function fetchWithAuth(url: string, options: RequestInit = {}) {
-  const token = getStoredToken();
-  const headers = new Headers(options.headers || {});
-  if (token) {
-    headers.set('Authorization', `Bearer ${token}`);
-  }
-  if (!headers.has('Content-Type') && !(options.body instanceof FormData)) {
-    headers.set('Content-Type', 'application/json');
-  }
+    const token = getStoredToken();
+    const headers = new Headers(options.headers || {});
+    if (token) {
+        headers.set("Authorization", `Bearer ${token}`);
+    }
+    if (!headers.has("Content-Type") && !(options.body instanceof FormData)) {
+        headers.set("Content-Type", "application/json");
+    }
 
-  try {
-    const res = await fetch(url, { ...options, headers });
-    if (!res.ok) {
-      if (res.status === 401) {
-        clearStoredSession();
-        if (typeof window !== 'undefined') {
-          window.dispatchEvent(new CustomEvent('boutique:unauthorized'));
+    try {
+        const res = await fetch(url, { ...options, headers });
+        if (!res.ok) {
+            if (res.status === 401) {
+                clearStoredSession();
+                if (typeof window !== "undefined") {
+                    window.dispatchEvent(
+                        new CustomEvent("boutique:unauthorized")
+                    );
+                }
+            }
+            let errorMsg = `Request failed (${res.status})`;
+            try {
+                const json = await res.json();
+                if (json.error) errorMsg = json.error;
+            } catch {
+                // fallback to status text
+            }
+            throw new Error(errorMsg);
         }
-      }
-      let errorMsg = `Request failed (${res.status})`;
-      try {
-        const json = await res.json();
-        if (json.error) errorMsg = json.error;
-      } catch {
-        // fallback to status text
-      }
-      throw new Error(errorMsg);
+        return res.json();
+    } catch (err: any) {
+        if (
+            err.name === "TypeError" &&
+            typeof err.message === "string" &&
+            err.message.toLowerCase().includes("fetch")
+        ) {
+            throw new Error(
+                "Network connection error: Unable to communicate with the server. Please check your network or try again."
+            );
+        }
+        throw err;
     }
-    return res.json();
-  } catch (err: any) {
-    if (err.name === 'TypeError' && typeof err.message === 'string' && err.message.toLowerCase().includes('fetch')) {
-      throw new Error('Network connection error: Unable to communicate with the server. Please check your network or try again.');
-    }
-    throw err;
-  }
 }
