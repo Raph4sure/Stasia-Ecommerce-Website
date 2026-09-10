@@ -43,7 +43,7 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
                 <img
                     src="stasia_logo2.png"
                     alt="Product Logo"
-                    className="w-full h-1 object-cover"
+                    className="w-full h-full object-contain"
                 />
             </div>
 
