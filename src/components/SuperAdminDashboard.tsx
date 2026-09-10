@@ -489,13 +489,13 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({
         currentVal: boolean
     ) => {
         try {
-            await fetchWithAuth(
-                `/api/categories/${encodeURIComponent(catName)}/availability`,
-                {
-                    method: "PATCH",
-                    body: JSON.stringify({ isAvailable: !currentVal }),
-                }
-            );
+            await fetchWithAuth("/api/categories", {
+                method: "POST",
+                body: JSON.stringify({
+                    category: catName,
+                    isAvailable: !currentVal,
+                }),
+            });
             await onRefreshData();
         } catch (err: any) {
             setStaffErrorMsg(
