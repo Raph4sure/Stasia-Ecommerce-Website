@@ -4,6 +4,11 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Stasia Elegant Fabrique - Luxury Fabrics & Fashion Wears",
   description: "Luxury fabrics, clothing, wrappers, and accessories boutique store.",
+  icons: {
+    icon: "/stasia_logo.png",
+    shortcut: "/stasia_logo.png",
+    apple: "/stasia_logo.png",
+  },
 };
 
 export default function RootLayout({
