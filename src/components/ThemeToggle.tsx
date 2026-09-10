@@ -38,7 +38,7 @@ export const ThemeToggle: React.FC<ThemeToggleProps> = ({
   return (
     <div
       id="theme-toggle-group"
-      className="inline-flex items-center p-0.5 rounded-full bg-stone-200/70 dark:bg-stone-800/80 border border-stone-300/60 dark:border-stone-700/80 backdrop-blur-sm shadow-inner transition-colors"
+      className="inline-flex items-center p-0.5 rounded-full bg-stone-200/80 dark:bg-stone-800/80 border border-stone-300/60 dark:border-stone-700/80 backdrop-blur-sm shadow-inner transition-colors shrink-0"
       role="radiogroup"
       aria-label="Theme selector"
     >
@@ -53,14 +53,14 @@ export const ThemeToggle: React.FC<ThemeToggleProps> = ({
             aria-checked={isActive}
             onClick={() => onThemeChange(opt.mode)}
             title={`Switch to ${opt.label} mode ${opt.mode === 'system' ? '(follows device settings)' : ''}`}
-            className={`flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium transition-all ${
+            className={`flex items-center gap-1 px-1.5 sm:px-2.5 py-1 rounded-full text-xs font-medium transition-all cursor-pointer ${
               isActive
                 ? 'bg-white dark:bg-stone-900 text-amber-700 dark:text-amber-300 shadow-sm'
                 : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200'
             }`}
           >
             {opt.icon}
-            <span className="hidden sm:inline">{opt.label}</span>
+            <span className="hidden lg:inline">{opt.label}</span>
           </button>
         );
       })}
