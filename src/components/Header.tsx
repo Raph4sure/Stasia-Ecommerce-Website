@@ -38,7 +38,7 @@ export const Header: React.FC<HeaderProps> = ({
       className="sticky top-0 z-40 bg-white/95 dark:bg-stone-950/95 text-stone-900 dark:text-stone-100 border-b border-stone-200/80 dark:border-stone-800/80 shadow-xs backdrop-blur-md transition-colors"
     >
       <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 sm:h-20 gap-2">
+        <div className="flex items-center justify-between h-16 sm:h-20 gap-1.5 sm:gap-2 min-w-0">
           {/* Brand Logo & Name */}
           <button
             id="header-brand-button"
@@ -50,7 +50,7 @@ export const Header: React.FC<HeaderProps> = ({
           </button>
 
           {/* Navigation Controls */}
-          <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
+          <div className="flex items-center gap-1 sm:gap-3 shrink-0">
             {/* Theme Switcher Toggle */}
             <ThemeToggle
               theme={theme}

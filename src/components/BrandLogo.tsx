@@ -21,7 +21,7 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
 
   const titleSize = {
     sm: 'text-xs sm:text-base',
-    md: 'text-sm xs:text-base sm:text-xl',
+    md: 'text-xs sm:text-xl',
     lg: 'text-xl sm:text-3xl',
   }[size];
 

@@ -135,7 +135,7 @@ export const RecentlyAddedSlideshow: React.FC<RecentlyAddedSlideshowProps> = ({
         <section
             id="coverflow-slideshow"
             aria-label="New Arrivals Showcase"
-            className="relative w-full mb-12 select-none"
+            className="relative w-full min-w-0 mb-12 select-none overflow-hidden"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
             onTouchStart={handleTouchStart}
@@ -187,7 +187,7 @@ export const RecentlyAddedSlideshow: React.FC<RecentlyAddedSlideshowProps> = ({
             </div>
 
             {/* 3D Cover Flow Stage Area (Center, Left Previous, Right Next) */}
-            <div className="relative w-full h-[280px] sm:h-[380px] md:h-[460px] lg:h-[500px] flex items-center justify-center overflow-hidden py-4">
+            <div className="relative w-full h-[250px] sm:h-[360px] md:h-[430px] lg:h-[470px] flex items-center justify-center overflow-hidden py-4">
                 {/* Left Arrow Nav Button */}
                 <button
                     type="button"
@@ -249,30 +249,30 @@ export const RecentlyAddedSlideshow: React.FC<RecentlyAddedSlideshowProps> = ({
                                 "shadow-2xl ring-1 ring-black/5 dark:ring-white/10";
                         } else if (isLeft) {
                             // Previous card on the left side: scaled down, tucked behind
-                            transformClass =
-                                "-translate-x-[36%] sm:-translate-x-[58%] md:-translate-x-[62%] lg:-translate-x-[66%] scale-[0.85] sm:scale-[0.86]";
+                                transformClass =
+                                "-translate-x-[62%] sm:-translate-x-[68%] md:-translate-x-[72%] lg:-translate-x-[76%] scale-[0.72] sm:scale-[0.82]";
                             zIndexClass = "z-20";
                             opacityClass = "opacity-60 sm:opacity-70 hover:opacity-90";
                             shadowClass = "shadow-xl";
                         } else if (isRight) {
                             // Upcoming new card on the right side: scaled down, tucked behind
-                            transformClass =
-                                "translate-x-[36%] sm:translate-x-[58%] md:translate-x-[62%] lg:translate-x-[66%] scale-[0.85] sm:scale-[0.86]";
+                                transformClass =
+                                "translate-x-[62%] sm:translate-x-[68%] md:translate-x-[72%] lg:translate-x-[76%] scale-[0.72] sm:scale-[0.82]";
                             zIndexClass = "z-20";
                             opacityClass = "opacity-60 sm:opacity-70 hover:opacity-90";
                             shadowClass = "shadow-xl";
                         } else if (isFarLeft) {
                             // Far left preview (if total items >= 5)
-                            transformClass =
-                                "-translate-x-[70%] sm:-translate-x-[102%] md:-translate-x-[112%] scale-[0.70]";
+                                transformClass =
+                                "-translate-x-[105%] sm:-translate-x-[118%] md:-translate-x-[128%] scale-[0.58] sm:scale-[0.68]";
                             zIndexClass = "z-10";
                             opacityClass =
                                 "opacity-35 hover:opacity-60 hidden sm:block";
                             shadowClass = "shadow-md";
                         } else if (isFarRight) {
                             // Far right preview (if total items >= 5)
-                            transformClass =
-                                "translate-x-[70%] sm:translate-x-[102%] md:translate-x-[112%] scale-[0.70]";
+                                transformClass =
+                                "translate-x-[105%] sm:translate-x-[118%] md:translate-x-[128%] scale-[0.58] sm:scale-[0.68]";
                             zIndexClass = "z-10";
                             opacityClass =
                                 "opacity-35 hover:opacity-60 hidden sm:block";
@@ -284,7 +284,7 @@ export const RecentlyAddedSlideshow: React.FC<RecentlyAddedSlideshowProps> = ({
                                 key={product.id}
                                 id={`coverflow-card-${product.id}`}
                                 onClick={() => onSelectProduct(product)}
-                                className={`absolute w-[78vw] max-w-[340px] sm:max-w-none sm:w-[520px] md:w-[620px] lg:w-[700px] h-[230px] sm:h-[340px] md:h-[420px] lg:h-[460px] rounded-3xl overflow-hidden cursor-pointer transition-all duration-500 ease-out origin-center bg-stone-100 dark:bg-stone-900 border border-stone-200/80 dark:border-stone-800 ${transformClass} ${zIndexClass} ${opacityClass} ${shadowClass} group`}
+                                className={`absolute w-[68vw] max-w-[300px] sm:w-[54vw] sm:max-w-[520px] md:w-[52vw] md:max-w-[620px] lg:w-[50vw] lg:max-w-[680px] h-[205px] sm:h-[320px] md:h-[390px] lg:h-[430px] rounded-2xl sm:rounded-3xl overflow-hidden cursor-pointer transition-all duration-500 ease-out origin-center bg-stone-100 dark:bg-stone-900 border border-stone-200/80 dark:border-stone-800 ${transformClass} ${zIndexClass} ${opacityClass} ${shadowClass} group`}
                                 title={`Click to view details for ${product.title}`}
                             >
                                 {/* Product Image showcasing creation */}

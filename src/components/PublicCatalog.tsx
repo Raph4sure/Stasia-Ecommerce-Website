@@ -175,7 +175,7 @@ export const PublicCatalog: React.FC<PublicCatalogProps> = ({
     return (
         <div
             id="public-catalog-container"
-            className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8"
+            className="w-full max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-5 sm:py-8 overflow-x-hidden"
         >
             {/* ================= EASILY DISMISSIBLE POP-UP ON TOP OF ITEMS ================= */}
             {isNoticePopupOpen && (
@@ -451,7 +451,7 @@ export const PublicCatalog: React.FC<PublicCatalogProps> = ({
 
             {/* ================= PRODUCT GRID (ROW-BY-ROW ON SCROLL) ================= */}
             {isLoading ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6">
                     {[1, 2, 3, 4].map((i) => (
                         <div
                             key={i}
@@ -494,7 +494,7 @@ export const PublicCatalog: React.FC<PublicCatalogProps> = ({
                 <>
                     <div
                         id="products-grid"
-                        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-7"
+                        className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-7"
                     >
                         {displayedProducts.map((product) => {
                             const isLowStock =
@@ -511,7 +511,7 @@ export const PublicCatalog: React.FC<PublicCatalogProps> = ({
                                     key={product.id}
                                     id={`product-card-${product.id}`}
                                     onClick={() => onSelectProduct(product)}
-                                    className="group bg-white dark:bg-stone-900/90 rounded-3xl border border-stone-200/80 dark:border-stone-800/90 overflow-hidden shadow-xs hover:shadow-xl hover:border-amber-400/80 dark:hover:border-amber-500/60 hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-col"
+                                    className="group min-w-0 bg-white dark:bg-stone-900/90 rounded-2xl sm:rounded-3xl border border-stone-200/80 dark:border-stone-800/90 overflow-hidden shadow-xs hover:shadow-xl hover:border-amber-400/80 dark:hover:border-amber-500/60 hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-col"
                                 >
                                     {/* Image Container with Stock & Category Badge */}
                                     <div className="relative w-full aspect-[4/5] bg-stone-100 dark:bg-stone-800 overflow-hidden">
@@ -563,22 +563,22 @@ export const PublicCatalog: React.FC<PublicCatalogProps> = ({
                                     </div>
 
                                     {/* Card Body */}
-                                    <div className="p-5 flex flex-col flex-1 justify-between">
+                                    <div className="p-2.5 sm:p-5 flex flex-col flex-1 justify-between">
                                         <div>
                                             {/* Item Title */}
-                                            <h3 className="font-serif font-bold text-stone-900 dark:text-stone-100 text-base sm:text-lg group-hover:text-amber-700 dark:group-hover:text-amber-300 transition-colors line-clamp-1 mb-1.5">
+                                            <h3 className="font-serif font-bold text-stone-900 dark:text-stone-100 text-sm sm:text-lg group-hover:text-amber-700 dark:group-hover:text-amber-300 transition-colors line-clamp-2 sm:line-clamp-1 mb-1.5">
                                                 {product.title}
                                             </h3>
 
                                             {/* Unique Reference Code No. */}
-                                            <div className="flex items-center justify-between py-1.5 px-2.5 rounded-xl bg-stone-50 dark:bg-stone-950/60 border border-stone-200/70 dark:border-stone-800/80 mb-4">
+                                            <div className="flex min-w-0 items-center justify-between gap-1 py-1.5 px-2 sm:px-2.5 rounded-xl bg-stone-50 dark:bg-stone-950/60 border border-stone-200/70 dark:border-stone-800/80 mb-3 sm:mb-4">
                                                 <div className="flex items-center gap-1.5">
                                                     <span className="text-[10px] uppercase font-mono tracking-wider text-stone-400 dark:text-stone-500">
                                                         Ref:
                                                     </span>
                                                     <span
                                                         id={`product-codeno-${product.id}`}
-                                                        className="text-xs font-mono font-medium text-stone-800 dark:text-stone-200"
+                                                        className="text-[10px] sm:text-xs font-mono font-medium text-stone-800 dark:text-stone-200 truncate"
                                                     >
                                                         {product.codeNo}
                                                     </span>
@@ -593,7 +593,7 @@ export const PublicCatalog: React.FC<PublicCatalogProps> = ({
                                                             product.codeNo
                                                         )
                                                     }
-                                                    className="inline-flex items-center gap-1 text-[11px] font-medium text-amber-700 dark:text-amber-400 hover:text-amber-900 dark:hover:text-amber-200 transition py-0.5 px-1.5 rounded cursor-pointer"
+                                                    className="inline-flex shrink-0 items-center gap-1 text-[10px] sm:text-[11px] font-medium text-amber-700 dark:text-amber-400 hover:text-amber-900 dark:hover:text-amber-200 transition py-0.5 px-1 rounded cursor-pointer"
                                                     title="Copy Code No. to quote when ordering"
                                                 >
                                                     {copiedCode ===
@@ -633,7 +633,7 @@ export const PublicCatalog: React.FC<PublicCatalogProps> = ({
                                                             product
                                                         );
                                                     }}
-                                                    className="min-w-0 px-2.5 py-2 rounded-xl bg-stone-100 dark:bg-stone-800 hover:bg-stone-200 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 text-xs font-semibold transition-all shadow-2xs cursor-pointer"
+                                                    className="min-w-0 px-1.5 sm:px-2.5 py-2 rounded-xl bg-stone-100 dark:bg-stone-800 hover:bg-stone-200 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 text-[10px] sm:text-xs font-semibold transition-all shadow-2xs cursor-pointer"
                                                 >
                                                     <span className="block truncate">
                                                         View & Order
@@ -648,7 +648,7 @@ export const PublicCatalog: React.FC<PublicCatalogProps> = ({
                                                             product
                                                         )
                                                     }
-                                                    className="min-w-0 px-2.5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 disabled:bg-stone-200 disabled:text-stone-400 dark:disabled:bg-stone-800 dark:disabled:text-stone-500 text-stone-950 text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-2xs cursor-pointer disabled:cursor-not-allowed"
+                                                    className="min-w-0 px-1.5 sm:px-2.5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 disabled:bg-stone-200 disabled:text-stone-400 dark:disabled:bg-stone-800 dark:disabled:text-stone-500 text-stone-950 text-[10px] sm:text-xs font-bold transition-all flex items-center justify-center gap-1 shadow-2xs cursor-pointer disabled:cursor-not-allowed"
                                                 >
                                                     <ShoppingBag className="w-3.5 h-3.5 shrink-0" />
                                                     <span className="truncate">
@@ -679,7 +679,7 @@ export const PublicCatalog: React.FC<PublicCatalogProps> = ({
                                 <Loader2 className="w-4 h-4 animate-spin text-amber-600 dark:text-amber-400" />
                                 <span>Loading more items...</span>
                             </div>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 animate-pulse">
+                            <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6 animate-pulse">
                                 {[1, 2, 3, 4].map((i) => (
                                     <div
                                         key={i}

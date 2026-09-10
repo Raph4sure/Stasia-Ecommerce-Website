@@ -98,7 +98,7 @@ export const CartDrawer: React.FC = () => {
             <div
                 id="cart-drawer-panel"
                 onClick={(e) => e.stopPropagation()}
-                className="bg-white dark:bg-stone-900 w-full max-w-md h-full shadow-2xl flex flex-col justify-between border-l border-stone-200 dark:border-stone-800 animate-in slide-in-from-right duration-300 text-stone-900 dark:text-stone-100"
+                className="bg-white dark:bg-stone-900 w-full max-w-md min-w-0 h-full shadow-2xl flex flex-col justify-between border-l border-stone-200 dark:border-stone-800 animate-in slide-in-from-right duration-300 text-stone-900 dark:text-stone-100"
             >
                 {/* Header */}
                 <div className="p-5 border-b border-stone-200 dark:border-stone-800 flex items-center justify-between bg-stone-50/70 dark:bg-stone-950/50">
@@ -130,7 +130,7 @@ export const CartDrawer: React.FC = () => {
                 </div>
 
                 {/* Content Area */}
-                <div className="flex-1 overflow-y-auto p-5 space-y-5">
+                <div className="flex-1 min-w-0 overflow-y-auto p-3 sm:p-5 space-y-5">
                     {/* VIEW A: Generated Order Code Celebratory Screen */}
                     {generatedOrder ? (
                         <div className="space-y-6 py-4 animate-in fade-in zoom-in-95 duration-200 text-center">
@@ -142,7 +142,7 @@ export const CartDrawer: React.FC = () => {
                                 <span className="inline-block text-[10px] font-mono uppercase tracking-widest text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-3 py-1 rounded-full border border-emerald-200 dark:border-emerald-800 font-bold mb-2">
                                     Order Code Generated Successfully!
                                 </span>
-                                <h4 className="font-serif text-2xl font-bold text-stone-900 dark:text-stone-100">
+                                <h4 className="font-serif text-xl sm:text-2xl font-bold text-stone-900 dark:text-stone-100">
                                     Ready for Seller Processing
                                 </h4>
                                 <p className="text-xs text-stone-600 dark:text-stone-400 mt-1 max-w-xs mx-auto leading-relaxed font-sans">
@@ -153,11 +153,11 @@ export const CartDrawer: React.FC = () => {
                             </div>
 
                             {/* Big Order Code Display Card */}
-                            <div className="bg-stone-50 dark:bg-stone-950/80 p-5 rounded-3xl border-2 border-amber-300 dark:border-amber-700/80 shadow-md">
+                            <div className="bg-stone-50 dark:bg-stone-950/80 p-3 sm:p-5 rounded-3xl border-2 border-amber-300 dark:border-amber-700/80 shadow-md overflow-hidden">
                                 <span className="text-[10px] uppercase tracking-widest text-stone-400 dark:text-stone-500 font-sans block mb-1">
                                     Your Unique Store Order Code
                                 </span>
-                                <div className="font-mono text-3xl sm:text-4xl font-extrabold tracking-widest text-amber-700 dark:text-amber-300 my-1">
+                                <div className="font-mono text-2xl sm:text-4xl font-extrabold tracking-widest text-amber-700 dark:text-amber-300 my-1 break-all">
                                     {generatedOrder.code}
                                 </div>
                                 <div className="text-xs text-stone-500 dark:text-stone-400 font-sans mt-2 flex items-center justify-center gap-2">
@@ -211,7 +211,7 @@ export const CartDrawer: React.FC = () => {
                                         key={idx}
                                         className="flex justify-between text-xs items-center"
                                     >
-                                        <div className="truncate max-w-[210px]">
+                                        <div className="min-w-0 flex-1 truncate max-w-[210px]">
                                             <span className="font-medium text-stone-800 dark:text-stone-200 block truncate">
                                                 {it.title}
                                             </span>

@@ -53,13 +53,13 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
     return (
         <div
             id="product-detail-modal-overlay"
-            className="fixed inset-0 z-50 bg-stone-950/75 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto"
+            className="fixed inset-0 z-50 bg-stone-950/75 backdrop-blur-md flex items-start sm:items-center justify-center p-2 sm:p-4 overflow-y-auto"
             onClick={onClose}
         >
             <div
                 id="product-detail-modal-card"
                 onClick={(e) => e.stopPropagation()}
-                className="bg-white dark:bg-stone-900 rounded-3xl max-w-3xl w-full overflow-hidden shadow-2xl border border-stone-200 dark:border-stone-800 animate-in fade-in zoom-in-95 duration-200 relative text-stone-900 dark:text-stone-100"
+                className="bg-white dark:bg-stone-900 rounded-2xl sm:rounded-3xl max-w-3xl w-full min-w-0 my-2 sm:my-0 overflow-hidden shadow-2xl border border-stone-200 dark:border-stone-800 animate-in fade-in zoom-in-95 duration-200 relative text-stone-900 dark:text-stone-100"
             >
                 {/* Close Button */}
                 <button
@@ -72,7 +72,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
 
                 <div className="grid grid-cols-1 md:grid-cols-2">
                     {/* Gallery Column */}
-                    <div className="p-6 bg-stone-50 dark:bg-stone-950/50 flex flex-col justify-between border-b md:border-b-0 md:border-r border-stone-200 dark:border-stone-800">
+                    <div className="min-w-0 p-3 sm:p-6 bg-stone-50 dark:bg-stone-950/50 flex flex-col justify-between border-b md:border-b-0 md:border-r border-stone-200 dark:border-stone-800">
                         <div className="relative aspect-[4/5] rounded-2xl overflow-hidden bg-stone-200 dark:bg-stone-800 mb-4 shadow-inner">
                             <img
                                 src={images[activeImageIndex] || images[0]}
@@ -113,11 +113,11 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                     </div>
 
                     {/* Details Column */}
-                    <div className="p-6 sm:p-8 flex flex-col justify-between">
+                    <div className="min-w-0 p-4 sm:p-8 flex flex-col justify-between">
                         <div>
                             {/* Category & Status */}
-                            <div className="flex items-center justify-between gap-2 mb-3">
-                                <span className="text-xs font-mono uppercase tracking-widest text-amber-800 dark:text-amber-300 bg-amber-50 dark:bg-amber-950/60 px-3 py-1 rounded-full border border-amber-200 dark:border-amber-800/60 font-semibold">
+                            <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+                                <span className="max-w-full truncate text-[10px] sm:text-xs font-mono uppercase tracking-widest text-amber-800 dark:text-amber-300 bg-amber-50 dark:bg-amber-950/60 px-2 sm:px-3 py-1 rounded-full border border-amber-200 dark:border-amber-800/60 font-semibold">
                                     {product.category}
                                 </span>
                                 {isOutOfStock ? (
@@ -125,7 +125,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                                         Out of Stock
                                     </span>
                                 ) : isLowStock ? (
-                                    <span className="text-xs font-bold text-amber-800 dark:text-amber-300 bg-amber-50 dark:bg-amber-950/70 px-3 py-1 rounded-full border border-amber-200 dark:border-amber-800/60 flex items-center gap-1">
+                                    <span className="max-w-full text-[10px] sm:text-xs font-bold text-amber-800 dark:text-amber-300 bg-amber-50 dark:bg-amber-950/70 px-2 sm:px-3 py-1 rounded-full border border-amber-200 dark:border-amber-800/60 flex items-center gap-1">
                                         <AlertTriangle className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />{" "}
                                         Limited Stock Available
                                     </span>
@@ -142,12 +142,12 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                             </h2>
 
                             {/* Unique Code No. Box */}
-                            <div className="bg-stone-100 dark:bg-stone-950/80 rounded-2xl p-3.5 border border-stone-200/80 dark:border-stone-800 mb-6 flex items-center justify-between">
-                                <div>
+                            <div className="bg-stone-100 dark:bg-stone-950/80 rounded-2xl p-3.5 border border-stone-200/80 dark:border-stone-800 mb-6 flex items-center justify-between gap-2 min-w-0">
+                                <div className="min-w-0">
                                     <div className="text-[10px] text-stone-400 dark:text-stone-500 uppercase tracking-widest font-sans">
                                         Item Reference
                                     </div>
-                                    <div className="text-sm font-mono text-stone-700 dark:text-stone-300">
+                                    <div className="text-xs sm:text-sm font-mono text-stone-700 dark:text-stone-300 truncate">
                                         Code No.{" "}
                                         <strong className="text-stone-950 dark:text-stone-100 font-bold">
                                             {product.codeNo}
@@ -157,7 +157,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                                 <button
                                     id="btn-copy-code-modal"
                                     onClick={handleCopyCode}
-                                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white dark:bg-stone-800 hover:bg-stone-50 dark:hover:bg-stone-700 border border-stone-200 dark:border-stone-700 text-stone-800 dark:text-stone-200 text-xs font-medium shadow-2xs transition cursor-pointer"
+                                    className="shrink-0 flex items-center gap-1.5 px-2 sm:px-3 py-1.5 rounded-xl bg-white dark:bg-stone-800 hover:bg-stone-50 dark:hover:bg-stone-700 border border-stone-200 dark:border-stone-700 text-stone-800 dark:text-stone-200 text-[10px] sm:text-xs font-medium shadow-2xs transition cursor-pointer"
                                 >
                                     {copied ? (
                                         <>
