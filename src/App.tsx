@@ -9,6 +9,7 @@ import { SuperAdminDashboard } from './components/SuperAdminDashboard';
 import { AdminPosDashboard } from './components/AdminPosDashboard';
 import { InquiryGuideModal } from './components/InquiryGuideModal';
 import { CartDrawer } from './components/CartDrawer';
+import { FloatingCartButton } from './components/FloatingCartButton';
 import { CartProvider } from './lib/CartContext';
 import { Product, Sale, User } from './types';
 import { useTheme } from './lib/theme';
@@ -248,6 +249,7 @@ export default function App() {
       />
 
       {/* Shopping Cart Drawer / Modal */}
+      <FloatingCartButton />
       <CartDrawer />
 
       {/* Global Minimalist Boutique Footer */}

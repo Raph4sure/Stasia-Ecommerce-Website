@@ -226,15 +226,15 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                             </button>
                             <a
                                 href={`mailto:orders@stasiafabrique.com?subject=Inquiry%20for%20Item%20${encodeURIComponent(
-                                    product.codeNo
+                                    product.codeNo,
                                 )}%20-%20${encodeURIComponent(
-                                    product.title
+                                    product.title,
                                 )}&body=Hello%20Stasia%20Elegant%20Fabric,%0A%0AI%20would%20like%20to%20order%20or%20inquire%20about%20item%20code:%20${encodeURIComponent(
-                                    product.codeNo
+                                    product.codeNo,
                                 )}%20(${encodeURIComponent(
-                                    product.title
+                                    product.title,
                                 )})%20priced%20at%20${encodeURIComponent(
-                                    formatPrice(product.pricePerUnit)
+                                    formatPrice(product.pricePerUnit),
                                 )}.`}
                                 className="w-full py-3 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-stone-950 font-bold rounded-2xl text-center text-sm flex items-center justify-center gap-2 shadow-sm transition"
                             >

@@ -455,6 +455,187 @@ export const AdminPosDashboard: React.FC<AdminPosDashboardProps> = ({
                             </div>
                         </div>
 
+                        {/* Right Column: Register Terminal Cart (5 cols) */}
+                        <div className="lg:col-span-5 xl:col-span-4">
+                            <div className="bg-white rounded-2xl border border-stone-200 shadow-lg p-5 sticky top-22 flex flex-col justify-between min-h-[500px]">
+                                <div>
+                                    <div className="flex items-center justify-between pb-3 border-b border-stone-200 mb-4">
+                                        <div className="flex items-center gap-2">
+                                            <ShoppingCart className="w-5 h-5 text-amber-600" />
+                                            <h3 className="font-serif font-bold text-base text-stone-900">
+                                                Active Sales Register
+                                            </h3>
+                                        </div>
+                                        {cart.length > 0 && (
+                                            <button
+                                                onClick={clearCart}
+                                                className="text-xs text-stone-400 hover:text-rose-600 transition"
+                                            >
+                                                Clear All
+                                            </button>
+                                        )}
+                                    </div>
+
+                                    {saleError && (
+                                        <div className="mb-4 p-3 bg-rose-50 border border-rose-200 text-rose-800 rounded-xl text-xs flex items-center gap-2">
+                                            <AlertCircle className="w-4 h-4 shrink-0 text-rose-600" />
+                                            <span>{saleError}</span>
+                                        </div>
+                                    )}
+
+                                    {/* Cart Items List */}
+                                    {cart.length === 0 ? (
+                                        <div className="py-16 text-center text-stone-400">
+                                            <Store className="w-10 h-10 mx-auto text-stone-300 mb-2 stroke-1" />
+                                            <p className="text-xs font-medium text-stone-600">
+                                                Cart is currently empty
+                                            </p>
+                                            <p className="text-[11px] text-stone-400 mt-1">
+                                                Click any item on the left to
+                                                add it to the transaction
+                                                register.
+                                            </p>
+                                        </div>
+                                    ) : (
+                                        <div className="space-y-3 max-h-[340px] overflow-y-auto pr-1">
+                                            {cart.map((item) => (
+                                                <div
+                                                    key={item.product.id}
+                                                    className="p-3 bg-stone-50 rounded-xl border border-stone-200 flex items-center justify-between gap-3 text-xs"
+                                                >
+                                                    <div className="flex-1 min-w-0">
+                                                        <div className="font-semibold text-stone-900 truncate">
+                                                            {item.product.title}
+                                                        </div>
+                                                        <div className="text-[11px] text-stone-500 font-mono font-normal">
+                                                            Code:{" "}
+                                                            {
+                                                                item.product
+                                                                    .codeNo
+                                                            }{" "}
+                                                            •{" "}
+                                                            {formatPrice(
+                                                                item.product
+                                                                    .pricePerUnit
+                                                            )}{" "}
+                                                            ea.
+                                                        </div>
+                                                        <div className="text-[11px] font-mono font-semibold text-stone-900 mt-0.5">
+                                                            Subtotal:{" "}
+                                                            {formatPrice(
+                                                                item.product
+                                                                    .pricePerUnit *
+                                                                    item.quantity
+                                                            )}
+                                                        </div>
+                                                    </div>
+
+                                                    {/* Quantity Stepper */}
+                                                    <div className="flex items-center gap-1.5 bg-white border border-stone-200 rounded-lg p-1 shrink-0">
+                                                        <button
+                                                            onClick={() =>
+                                                                updateQuantity(
+                                                                    item.product
+                                                                        .id,
+                                                                    item.quantity -
+                                                                        1
+                                                                )
+                                                            }
+                                                            className="w-6 h-6 rounded flex items-center justify-center text-stone-600 hover:bg-stone-100"
+                                                        >
+                                                            <Minus className="w-3 h-3" />
+                                                        </button>
+                                                        <span className="w-6 text-center font-mono font-bold text-stone-800">
+                                                            {item.quantity}
+                                                        </span>
+                                                        <button
+                                                            onClick={() =>
+                                                                updateQuantity(
+                                                                    item.product
+                                                                        .id,
+                                                                    item.quantity +
+                                                                        1
+                                                                )
+                                                            }
+                                                            className="w-6 h-6 rounded flex items-center justify-center text-stone-600 hover:bg-stone-100"
+                                                        >
+                                                            <Plus className="w-3 h-3" />
+                                                        </button>
+                                                    </div>
+
+                                                    {/* Remove */}
+                                                    <button
+                                                        onClick={() =>
+                                                            removeFromCart(
+                                                                item.product.id
+                                                            )
+                                                        }
+                                                        className="p-1 text-stone-400 hover:text-rose-600"
+                                                        title="Remove item"
+                                                    >
+                                                        <Trash2 className="w-4 h-4" />
+                                                    </button>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+
+                                {/* Cart Footer Summary & Process Sale Button */}
+                                <div className="pt-4 border-t border-stone-200 mt-4 space-y-3">
+                                    <div className="space-y-1.5 text-xs">
+                                        <div className="flex justify-between text-stone-500">
+                                            <span>Total Item Units</span>
+                                            <span className="font-mono font-semibold text-stone-800">
+                                                {cartUnits} Units
+                                            </span>
+                                        </div>
+                                        <div className="flex justify-between text-stone-500">
+                                            <span>Tax / Handling</span>
+                                            <span className="font-mono">
+                                                {formatPrice(0)} (Included)
+                                            </span>
+                                        </div>
+                                        <div className="flex justify-between items-baseline text-sm pt-2 border-t border-stone-100">
+                                            <span className="font-serif font-bold text-stone-900 text-base">
+                                                Grand Total Amount
+                                            </span>
+                                            <span className="font-mono font-bold text-xl text-stone-950">
+                                                {formatPrice(cartTotal)}
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    {/* Requirement: Process Sale Button
+                    "Upon clicking 'Process Sale', automatically deduct the sold quantity from the main Inventory table and create a record in the Sold Items table." */}
+                                    <button
+                                        id="btn-process-sale"
+                                        onClick={handleProcessSale}
+                                        disabled={
+                                            cart.length === 0 ||
+                                            isProcessingSale
+                                        }
+                                        className="w-full py-3 px-4 bg-stone-900 hover:bg-stone-800 text-amber-300 font-semibold rounded-xl text-sm flex items-center justify-center gap-2 shadow-md transition disabled:opacity-40"
+                                    >
+                                        {isProcessingSale ? (
+                                            <span>
+                                                Executing Database
+                                                Transaction...
+                                            </span>
+                                        ) : (
+                                            <>
+                                                <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                                                <span>
+                                                    Process Sale (
+                                                    {formatPrice(cartTotal)})
+                                                </span>
+                                            </>
+                                        )}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
                         {/* Products POS Grid */}
                         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                             {posProducts.length === 0 ? (
@@ -539,178 +720,6 @@ export const AdminPosDashboard: React.FC<AdminPosDashboardProps> = ({
                                     );
                                 })
                             )}
-                        </div>
-                    </div>
-
-                    {/* Right Column: Register Terminal Cart (5 cols) */}
-                    <div className="lg:col-span-5 xl:col-span-4">
-                        <div className="bg-white rounded-2xl border border-stone-200 shadow-lg p-5 sticky top-22 flex flex-col justify-between min-h-[500px]">
-                            <div>
-                                <div className="flex items-center justify-between pb-3 border-b border-stone-200 mb-4">
-                                    <div className="flex items-center gap-2">
-                                        <ShoppingCart className="w-5 h-5 text-amber-600" />
-                                        <h3 className="font-serif font-bold text-base text-stone-900">
-                                            Active Sales Register
-                                        </h3>
-                                    </div>
-                                    {cart.length > 0 && (
-                                        <button
-                                            onClick={clearCart}
-                                            className="text-xs text-stone-400 hover:text-rose-600 transition"
-                                        >
-                                            Clear All
-                                        </button>
-                                    )}
-                                </div>
-
-                                {saleError && (
-                                    <div className="mb-4 p-3 bg-rose-50 border border-rose-200 text-rose-800 rounded-xl text-xs flex items-center gap-2">
-                                        <AlertCircle className="w-4 h-4 shrink-0 text-rose-600" />
-                                        <span>{saleError}</span>
-                                    </div>
-                                )}
-
-                                {/* Cart Items List */}
-                                {cart.length === 0 ? (
-                                    <div className="py-16 text-center text-stone-400">
-                                        <Store className="w-10 h-10 mx-auto text-stone-300 mb-2 stroke-1" />
-                                        <p className="text-xs font-medium text-stone-600">
-                                            Cart is currently empty
-                                        </p>
-                                        <p className="text-[11px] text-stone-400 mt-1">
-                                            Click any item on the left to add it
-                                            to the transaction register.
-                                        </p>
-                                    </div>
-                                ) : (
-                                    <div className="space-y-3 max-h-[340px] overflow-y-auto pr-1">
-                                        {cart.map((item) => (
-                                            <div
-                                                key={item.product.id}
-                                                className="p-3 bg-stone-50 rounded-xl border border-stone-200 flex items-center justify-between gap-3 text-xs"
-                                            >
-                                                <div className="flex-1 min-w-0">
-                                                    <div className="font-semibold text-stone-900 truncate">
-                                                        {item.product.title}
-                                                    </div>
-                                                    <div className="text-[11px] text-stone-500 font-mono font-normal">
-                                                        Code:{" "}
-                                                        {item.product.codeNo} •{" "}
-                                                        {formatPrice(
-                                                            item.product
-                                                                .pricePerUnit
-                                                        )}{" "}
-                                                        ea.
-                                                    </div>
-                                                    <div className="text-[11px] font-mono font-semibold text-stone-900 mt-0.5">
-                                                        Subtotal:{" "}
-                                                        {formatPrice(
-                                                            item.product
-                                                                .pricePerUnit *
-                                                                item.quantity
-                                                        )}
-                                                    </div>
-                                                </div>
-
-                                                {/* Quantity Stepper */}
-                                                <div className="flex items-center gap-1.5 bg-white border border-stone-200 rounded-lg p-1 shrink-0">
-                                                    <button
-                                                        onClick={() =>
-                                                            updateQuantity(
-                                                                item.product.id,
-                                                                item.quantity -
-                                                                    1
-                                                            )
-                                                        }
-                                                        className="w-6 h-6 rounded flex items-center justify-center text-stone-600 hover:bg-stone-100"
-                                                    >
-                                                        <Minus className="w-3 h-3" />
-                                                    </button>
-                                                    <span className="w-6 text-center font-mono font-bold text-stone-800">
-                                                        {item.quantity}
-                                                    </span>
-                                                    <button
-                                                        onClick={() =>
-                                                            updateQuantity(
-                                                                item.product.id,
-                                                                item.quantity +
-                                                                    1
-                                                            )
-                                                        }
-                                                        className="w-6 h-6 rounded flex items-center justify-center text-stone-600 hover:bg-stone-100"
-                                                    >
-                                                        <Plus className="w-3 h-3" />
-                                                    </button>
-                                                </div>
-
-                                                {/* Remove */}
-                                                <button
-                                                    onClick={() =>
-                                                        removeFromCart(
-                                                            item.product.id
-                                                        )
-                                                    }
-                                                    className="p-1 text-stone-400 hover:text-rose-600"
-                                                    title="Remove item"
-                                                >
-                                                    <Trash2 className="w-4 h-4" />
-                                                </button>
-                                            </div>
-                                        ))}
-                                    </div>
-                                )}
-                            </div>
-
-                            {/* Cart Footer Summary & Process Sale Button */}
-                            <div className="pt-4 border-t border-stone-200 mt-4 space-y-3">
-                                <div className="space-y-1.5 text-xs">
-                                    <div className="flex justify-between text-stone-500">
-                                        <span>Total Item Units</span>
-                                        <span className="font-mono font-semibold text-stone-800">
-                                            {cartUnits} Units
-                                        </span>
-                                    </div>
-                                    <div className="flex justify-between text-stone-500">
-                                        <span>Tax / Handling</span>
-                                        <span className="font-mono">
-                                            {formatPrice(0)} (Included)
-                                        </span>
-                                    </div>
-                                    <div className="flex justify-between items-baseline text-sm pt-2 border-t border-stone-100">
-                                        <span className="font-serif font-bold text-stone-900 text-base">
-                                            Grand Total Amount
-                                        </span>
-                                        <span className="font-mono font-bold text-xl text-stone-950">
-                                            {formatPrice(cartTotal)}
-                                        </span>
-                                    </div>
-                                </div>
-
-                                {/* Requirement: Process Sale Button
-                    "Upon clicking 'Process Sale', automatically deduct the sold quantity from the main Inventory table and create a record in the Sold Items table." */}
-                                <button
-                                    id="btn-process-sale"
-                                    onClick={handleProcessSale}
-                                    disabled={
-                                        cart.length === 0 || isProcessingSale
-                                    }
-                                    className="w-full py-3 px-4 bg-stone-900 hover:bg-stone-800 text-amber-300 font-semibold rounded-xl text-sm flex items-center justify-center gap-2 shadow-md transition disabled:opacity-40"
-                                >
-                                    {isProcessingSale ? (
-                                        <span>
-                                            Executing Database Transaction...
-                                        </span>
-                                    ) : (
-                                        <>
-                                            <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                                            <span>
-                                                Process Sale (
-                                                {formatPrice(cartTotal)})
-                                            </span>
-                                        </>
-                                    )}
-                                </button>
-                            </div>
                         </div>
                     </div>
                 </div>

@@ -61,7 +61,7 @@ export const CartDrawer: React.FC = () => {
         } catch (err: any) {
             setErrorMessage(
                 err.message ||
-                    "Failed to generate order code. Please try again."
+                    "Failed to generate order code. Please try again.",
             );
         }
     };
@@ -75,15 +75,15 @@ export const CartDrawer: React.FC = () => {
     const getWhatsAppShareUrl = (
         code: string,
         total: number,
-        count: number
+        count: number,
     ) => {
         // Replace with the seller's actual WhatsApp phone number in international format (e.g., 2348012345678)
         const SELLER_PHONE_NUMBER = "2348131115714";
 
         const text = encodeURIComponent(
             `Hello Stasia Elegant Fabric! I generated an Order Code: *${code}* for ${count} item(s) totaling ${formatPrice(
-                total
-            )}.\n\nPlease load my order in your store register to confirm availability. Thank you!`
+                total,
+            )}.\n\nPlease load my order in your store register to confirm availability. Thank you!`,
         );
 
         return `https://wa.me/${SELLER_PHONE_NUMBER}?text=${text}`;
@@ -165,7 +165,7 @@ export const CartDrawer: React.FC = () => {
                                         Total:{" "}
                                         <strong>
                                             {formatPrice(
-                                                generatedOrder.totalAmount
+                                                generatedOrder.totalAmount,
                                             )}
                                         </strong>
                                     </span>
@@ -234,8 +234,8 @@ export const CartDrawer: React.FC = () => {
                                     generatedOrder.totalAmount,
                                     generatedOrder.items.reduce(
                                         (s, i) => s + i.quantity,
-                                        0
-                                    )
+                                        0,
+                                    ),
                                 )}
                                 target="_blank"
                                 rel="noreferrer"
@@ -320,7 +320,7 @@ export const CartDrawer: React.FC = () => {
                                                 <div className="text-xs font-bold text-stone-950 dark:text-stone-50 mt-1">
                                                     {formatPrice(
                                                         item.product
-                                                            .pricePerUnit
+                                                            .pricePerUnit,
                                                     )}
                                                 </div>
                                             </div>
@@ -332,7 +332,7 @@ export const CartDrawer: React.FC = () => {
                                                     onClick={() =>
                                                         updateQuantity(
                                                             item.product.id,
-                                                            item.quantity - 1
+                                                            item.quantity - 1,
                                                         )
                                                     }
                                                     className="w-6 h-6 rounded-lg flex items-center justify-center text-stone-600 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-700 cursor-pointer"
@@ -347,7 +347,7 @@ export const CartDrawer: React.FC = () => {
                                                     onClick={() =>
                                                         updateQuantity(
                                                             item.product.id,
-                                                            item.quantity + 1
+                                                            item.quantity + 1,
                                                         )
                                                     }
                                                     className="w-6 h-6 rounded-lg flex items-center justify-center text-stone-600 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-700 cursor-pointer"
@@ -361,7 +361,7 @@ export const CartDrawer: React.FC = () => {
                                                 type="button"
                                                 onClick={() =>
                                                     removeFromCart(
-                                                        item.product.id
+                                                        item.product.id,
                                                     )
                                                 }
                                                 className="p-1.5 text-stone-400 hover:text-rose-600 dark:hover:text-rose-400 rounded-lg hover:bg-rose-50 dark:hover:bg-rose-950/50 transition cursor-pointer"

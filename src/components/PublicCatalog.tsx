@@ -124,7 +124,7 @@ export const PublicCatalog: React.FC<PublicCatalogProps> = ({
         setIsLoadingMore(true);
         setTimeout(() => {
             setVisibleCount((prev) =>
-                Math.min(prev + ITEMS_PER_ROW, filteredProducts.length)
+                Math.min(prev + ITEMS_PER_ROW, filteredProducts.length),
             );
             setIsLoadingMore(false);
         }, 320);
@@ -139,7 +139,7 @@ export const PublicCatalog: React.FC<PublicCatalogProps> = ({
                     loadNextRow();
                 }
             },
-            { rootMargin: "200px" }
+            { rootMargin: "200px" },
         );
 
         observer.observe(sentinelRef.current);
@@ -590,7 +590,7 @@ export const PublicCatalog: React.FC<PublicCatalogProps> = ({
                                                     onClick={(e) =>
                                                         handleCopyCode(
                                                             e,
-                                                            product.codeNo
+                                                            product.codeNo,
                                                         )
                                                     }
                                                     className="inline-flex shrink-0 items-center gap-1 text-[10px] sm:text-[11px] font-medium text-amber-700 dark:text-amber-400 hover:text-amber-900 dark:hover:text-amber-200 transition py-0.5 px-1 rounded cursor-pointer"
@@ -620,7 +620,7 @@ export const PublicCatalog: React.FC<PublicCatalogProps> = ({
                                                 </span>
                                                 <span className="text-base sm:text-lg font-bold text-stone-950 dark:text-stone-50 font-sans tracking-tight">
                                                     {formatPrice(
-                                                        product.pricePerUnit
+                                                        product.pricePerUnit,
                                                     )}
                                                 </span>
                                             </div>
@@ -630,7 +630,7 @@ export const PublicCatalog: React.FC<PublicCatalogProps> = ({
                                                     onClick={(e) => {
                                                         e.stopPropagation();
                                                         onSelectProduct(
-                                                            product
+                                                            product,
                                                         );
                                                     }}
                                                     className="min-w-0 px-1.5 sm:px-2.5 py-2 rounded-xl bg-stone-100 dark:bg-stone-800 hover:bg-stone-200 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 text-[10px] sm:text-xs font-semibold transition-all shadow-2xs cursor-pointer"
@@ -645,7 +645,7 @@ export const PublicCatalog: React.FC<PublicCatalogProps> = ({
                                                     onClick={(e) =>
                                                         handleAddToCart(
                                                             e,
-                                                            product
+                                                            product,
                                                         )
                                                     }
                                                     className="min-w-0 px-1.5 sm:px-2.5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 disabled:bg-stone-200 disabled:text-stone-400 dark:disabled:bg-stone-800 dark:disabled:text-stone-500 text-stone-950 text-[10px] sm:text-xs font-bold transition-all flex items-center justify-center gap-1 shadow-2xs cursor-pointer disabled:cursor-not-allowed"
