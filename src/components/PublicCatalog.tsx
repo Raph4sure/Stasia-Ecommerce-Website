@@ -527,7 +527,7 @@ export const PublicCatalog: React.FC<PublicCatalogProps> = ({
                                         />
                                         {/* Stock Availability Badge (NO QUANTITY NUMBERS EXPOSED) */}
 
-                                        <div className="absolute top-3.5 left-3.5 flex flex-col gap-1.5 z-10">
+                                        <div className="absolute top-3.5 left-1 md:left-3.5 flex flex-col gap-1.5 z-10">
                                             {isOutOfStock ? (
                                                 <span
                                                     className={`${badgeStyle} bg-emerald-800/80 text-emerald-100`}
@@ -549,7 +549,7 @@ export const PublicCatalog: React.FC<PublicCatalogProps> = ({
                                             )}
                                         </div>
                                         {/* Category Pill */}
-                                        <div className="absolute top-3.5 right-3.5 z-10">
+                                        <div className="absolute top-3.5 right-1 md:right-3.5 z-10">
                                             <span
                                                 className={`${badgeStyle} bg-stone-900/75 dark:bg-black/80 text-stone-100`}
                                             >
