@@ -108,31 +108,30 @@ export async function initializeDatabase() {
 
         const userCount = Number(existingUsers.rows[0]?.count || 0);
 
-        const superAdminPass = await bcrypt.hash("MA45goes@", 10);
-        const salesStaffPass = await bcrypt.hash("StaffPass123!", 10);
+        const superAdminEmail = process.env.SUPER_ADMIN_EMAIL || "raph4sure007@gmail.com";
+        const superAdminPassword = process.env.SUPER_ADMIN_PASSWORD;
+        const salesStaffEmail = process.env.SALES_STAFF_EMAIL;
+        const salesStaffPassword = process.env.SALES_STAFF_PASSWORD;
 
         if (userCount === 0) {
+            if (!superAdminPassword) {
+                throw new Error("SUPER_ADMIN_PASSWORD must be set before initializing an empty database.");
+            }
+
+            const now = new Date().toISOString();
             await client.execute({
-                sql: `INSERT INTO users (email, password_hash, role, created_at) VALUES 
-              ('raph4sure007@gmail.com', ?, 'SUPER_ADMIN', ?),
-            //   ('superadmin@boutique.com', ?, 'SUPER_ADMIN', ?),
-            //   ('sales@boutique.com', ?, 'ADMIN', ?);`,
-                args: [
-                    superAdminPass,
-                    new Date().toISOString(),
-                    // superAdminPass,
-                    // new Date().toISOString(),
-                    // salesStaffPass,
-                    // new Date().toISOString(),
-                ],
+                sql: `INSERT INTO users (email, password_hash, role, created_at) VALUES (?, ?, 'SUPER_ADMIN', ?);`,
+                args: [superAdminEmail.trim().toLowerCase(), await bcrypt.hash(superAdminPassword, 10), now],
             });
-            console.log("Default super admin and sales staff seeded.");
-        } else {
-            // Explicitly update Super Admin password to MA45goes@ as requested by user
-            await client.execute({
-                sql: `UPDATE users SET password_hash = ? WHERE role = 'SUPER_ADMIN';`,
-                args: [superAdminPass],
-            });
+
+            if (salesStaffEmail && salesStaffPassword) {
+                await client.execute({
+                    sql: `INSERT INTO users (email, password_hash, role, created_at) VALUES (?, ?, 'ADMIN', ?);`,
+                    args: [salesStaffEmail.trim().toLowerCase(), await bcrypt.hash(salesStaffPassword, 10), now],
+                });
+            }
+
+            console.log("Initial admin accounts seeded.");
         }
 
         // Update default weights for sample catalog if zero

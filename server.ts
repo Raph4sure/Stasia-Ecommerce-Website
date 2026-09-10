@@ -21,12 +21,12 @@ import {
     AuthenticatedRequest,
 } from "./src/server/auth";
 
-async function startServer() {
+const PORT = Number(process.env.PORT) || 3000;
+
+export async function startServer() {
     await initializeDatabase();
 
     const app = express();
-    const PORT = Number(process.env.PORT) || 3000;
-
     app.use(express.json({ limit: "40mb" }));
 
     // --- HEALTH CHECK ---
@@ -1571,9 +1571,13 @@ async function startServer() {
         });
     }
 
-    app.listen(PORT, "0.0.0.0", () => {
-        console.log(`Server running at http://0.0.0.0:${PORT}`);
-    });
+    return app;
 }
 
-startServer();
+if (!process.env.VERCEL) {
+    startServer().then((app) => {
+        app.listen(PORT, "0.0.0.0", () => {
+            console.log(`Server running at http://0.0.0.0:${PORT}`);
+        });
+    });
+}

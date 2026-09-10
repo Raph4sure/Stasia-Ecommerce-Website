@@ -169,6 +169,14 @@ TURSO_AUTH_TOKEN=your_turso_token
 # Required in production for stable admin sessions.
 JWT_SECRET=your_long_random_secret
 
+# Required only when the online users table is empty for first initialization.
+SUPER_ADMIN_EMAIL=admin@example.com
+SUPER_ADMIN_PASSWORD=your_secure_super_admin_password
+
+# Optional first staff account.
+SALES_STAFF_EMAIL=sales@example.com
+SALES_STAFF_PASSWORD=your_secure_staff_password
+
 ```
 
 Never commit `.env`, database tokens, JWT secrets, or other credentials.
@@ -188,7 +196,7 @@ Before deployment:
 
 1. Set a strong random `JWT_SECRET` in the hosting provider.
 2. Set `TURSO_DATABASE_URL` and `TURSO_AUTH_TOKEN` in the hosting provider.
-3. Change the default seeded Super Admin password immediately.
+3. Set `SUPER_ADMIN_EMAIL` and `SUPER_ADMIN_PASSWORD` before the first production startup.
 4. Never expose Turso credentials in frontend code.
 5. Do not commit `.env` or `local.db`.
 6. Use HTTPS in production.
@@ -199,40 +207,43 @@ Generate a secret with:
 openssl rand -base64 48
 ```
 
-## Hosting on Render
+### First online Super Admin
 
-A `render.yaml` Blueprint is included.
+Before starting the hosted application for the first time, add these values to
+the host environment:
 
-It configures:
-
--   Node web service
--   `npm ci && npm run build` build command
--   `npm start` start command
--   `/api/health` health check
--   `NODE_ENV=production`
--   Generated `JWT_SECRET`
--   Secret Turso environment variables
-
-Deployment steps:
-
-1. Push the repository to GitHub.
-2. In Render, choose **New > Blueprint**.
-3. Select the GitHub repository.
-4. Add `TURSO_DATABASE_URL` and `TURSO_AUTH_TOKEN` when prompted.
-5. Deploy the service.
-6. Test the deployed health endpoint:
-
-```text
-https://your-render-service.onrender.com/api/health
+```env
+SUPER_ADMIN_EMAIL=your-admin-email@example.com
+SUPER_ADMIN_PASSWORD=your-long-random-password
 ```
 
-Expected response:
+When the online `users` table is empty, the server creates this account with
+the `SUPER_ADMIN` role. Open `/private` on the hosted website and log in with
+those credentials. After the first account is created, changing these variables
+does not change the existing password. Use the Staff & Access Management screen
+to create additional accounts or reset credentials.
 
-```json
-{ "status": "ok" }
+If the online database already contains users, do not delete them just to seed
+an account. Log in with an existing Super Admin or create one through the
+database/admin tooling using a controlled migration.
+
+## Hosting
+
+The application can run on any Node.js host that supports a long-running
+Express process. Configure the host to run:
+
+```bash
+npm ci
+npm run build
+npm start
 ```
 
-Turso should be used for production persistence. A hosted service's local filesystem should not be treated as permanent storage for `local.db`.
+Set `NODE_ENV=production`, `TURSO_DATABASE_URL`, `TURSO_AUTH_TOKEN`, and
+`JWT_SECRET` in the host's environment settings. The host should provide its
+HTTP port through `PORT`.
+
+Turso should be used for production persistence. A hosted service's local
+filesystem should not be treated as permanent storage for `local.db`.
 
 ## Order Code Workflow
 
