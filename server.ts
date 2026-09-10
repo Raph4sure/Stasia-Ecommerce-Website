@@ -1563,6 +1563,9 @@ export async function startServer() {
         const distPath = path.join(process.cwd(), "dist");
         app.use(express.static(distPath));
         app.get("*", (req, res) => {
+            if (req.path.startsWith("/api")) {
+                return res.status(404).json({ error: `API endpoint ${req.method} ${req.path} not found` });
+            }
             res.sendFile(path.join(distPath, "index.html"));
         });
     }
