@@ -18,9 +18,75 @@ const COLOR_PRESETS = [
     { name: "Warm Beige", hex: "#f5f0eb" },
     { name: "Light Gray", hex: "#f3f4f6" },
     { name: "Pastel Pink", hex: "#fce7f3" },
-    { name: "Transparent", hex: "transparent" },
     { name: "Black", hex: "#000000" },
+    { name: "Transparent", hex: "transparent" },
 ];
+
+/**
+ * Takes a transparent PNG blob, paints it onto a solid color background
+ * (unless the color is "transparent"), and re-encodes it as WebP.
+ * All of this happens on the <canvas> element, entirely in the browser —
+ * no network request, no server round trip, no data usage beyond the
+ * one-time background-removal model download.
+ */
+function compositeAndEncode(
+    transparentBlob: Blob,
+    backgroundColor: string,
+    quality = 0.8
+): Promise<string> {
+    return new Promise((resolve, reject) => {
+        const img = new Image();
+        const url = URL.createObjectURL(transparentBlob);
+
+        img.onload = () => {
+            const canvas = document.createElement("canvas");
+            canvas.width = img.width;
+            canvas.height = img.height;
+            const ctx = canvas.getContext("2d");
+
+            if (!ctx) {
+                URL.revokeObjectURL(url);
+                reject(new Error("Could not get canvas context"));
+                return;
+            }
+
+            // Paint the background color first (skip entirely for "transparent"
+            // so the alpha channel is preserved in the final WebP).
+            if (backgroundColor && backgroundColor !== "transparent") {
+                ctx.fillStyle = backgroundColor;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            }
+
+            // Draw the subject on top of the background.
+            ctx.drawImage(img, 0, 0);
+            URL.revokeObjectURL(url);
+
+            // Encode as WebP directly from the canvas. All major modern
+            // browsers (Chrome, Edge, Firefox, Safari 14+) support this.
+            canvas.toBlob(
+                (webpBlob) => {
+                    if (!webpBlob) {
+                        reject(new Error("WebP encoding failed"));
+                        return;
+                    }
+                    const reader = new FileReader();
+                    reader.onload = () => resolve(reader.result as string);
+                    reader.onerror = reject;
+                    reader.readAsDataURL(webpBlob);
+                },
+                "image/webp",
+                quality
+            );
+        };
+
+        img.onerror = () => {
+            URL.revokeObjectURL(url);
+            reject(new Error("Failed to load image for compositing"));
+        };
+
+        img.src = url;
+    });
+}
 
 export default function PhotoStudio() {
     const [selectedColor, setSelectedColor] = useState("#ffffff");
@@ -50,42 +116,24 @@ export default function PhotoStudio() {
                     }...`
                 );
 
-                // 1. Remove background locally in the browser (runs a small ML model client-side)
+                // 1. Remove background locally in the browser (ML model, no network call per image)
                 const transparentBlob = await removeBackground(file, {
                     model: "isnet_quint8",
                 });
-
-                // 2. Convert Blob -> base64 data URL so we can send it as JSON
-                const transparentBase64: string = await new Promise(
-                    (resolve, reject) => {
-                        const reader = new FileReader();
-                        reader.onload = () => resolve(reader.result as string);
-                        reader.onerror = reject;
-                        reader.readAsDataURL(transparentBlob);
-                    }
-                );
 
                 setStatusText(
                     `Applying background & compressing photo ${i + 1}...`
                 );
 
-                // 3. Send to the API route to composite the chosen background color
-                //    and re-encode as compressed WebP
-                const res = await fetch("/api/compress", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        imageBase64: transparentBase64,
-                        backgroundColor: activeColor,
-                    }),
-                });
+                // 2. Composite the chosen color + encode to WebP — also fully local,
+                //    via <canvas>. No fetch, no upload, no download.
+                const finalImage = await compositeAndEncode(
+                    transparentBlob,
+                    activeColor,
+                    0.8
+                );
 
-                const data = await res.json();
-                if (data.success) {
-                    results.push(data.image);
-                } else {
-                    console.error(`Failed on photo ${i + 1}:`, data.error);
-                }
+                results.push(finalImage);
             }
 
             setProcessedImages(results);
@@ -122,7 +170,8 @@ export default function PhotoStudio() {
                 </h1>
                 <p className="text-sm text-stone-500">
                     Upload photos, choose a backdrop color, and download
-                    ready-to-use compressed WebP images.
+                    ready-to-use compressed WebP images. Everything runs in your
+                    browser — no images are uploaded to a server.
                 </p>
             </div>
 
@@ -133,7 +182,7 @@ export default function PhotoStudio() {
                     Select Background Color
                 </div>
 
-                <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
+                <div className="grid grid-cols-3 sm:grid-cols-7 gap-2">
                     {COLOR_PRESETS.map((preset) => (
                         <button
                             key={preset.hex}
