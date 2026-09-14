@@ -846,6 +846,8 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({
                         <span>Manage Staff</span>
                     </button>
 
+                    <a href="/compress" className="dark:text-amber-50">Edit</a>
+
                     <button
                         onClick={openCreateModal}
                         className="px-3.5 py-2 bg-stone-900 dark:bg-amber-500 hover:bg-stone-800 dark:hover:bg-amber-400 text-stone-100 dark:text-stone-950 font-medium text-xs sm:text-sm rounded-xl shadow-sm flex items-center gap-2 transition"
