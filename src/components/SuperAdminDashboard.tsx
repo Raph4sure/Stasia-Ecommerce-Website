@@ -96,7 +96,8 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({
     const [editingId, setEditingId] = useState<number | null>(null);
     const [editPrice, setEditPrice] = useState<string>("");
     const [editQuantity, setEditQuantity] = useState<string>("");
-    const [editWeight, setEditWeight] = useState<string>("");
+    // const [editWeight, setEditWeight] = useState<string>("");
+    const [editTotalWeight, setEditTotalWeight] = useState<string>("");
     const [isSavingInline, setIsSavingInline] = useState(false);
 
     // Upload / Edit Modal state
@@ -110,7 +111,8 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({
     const [formCategory, setFormCategory] = useState("Clothes");
     const [formPriceDollars, setFormPriceDollars] = useState("");
     const [formQuantity, setFormQuantity] = useState("10");
-    const [formWeight, setFormWeight] = useState("0.50");
+    // const [formWeight, setFormWeight] = useState("0.50");
+    const [formTotalWeight, setFormTotalWeight] = useState("2.00");
     const [formIsAvailable, setFormIsAvailable] = useState(true);
     const [formImageUrls, setFormImageUrls] = useState<string[]>([""]);
     const [isSubmittingForm, setIsSubmittingForm] = useState(false);
@@ -433,21 +435,58 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({
     }, [activeTab]);
 
     // Handle inline edit click
+    // const startInlineEdit = (p: Product) => {
+    //     setEditingId(p.id);
+    //     setEditPrice((p.pricePerUnit / 100).toFixed(2));
+    //     setEditQuantity(String(p.quantityInStock));
+    //     setEditWeight(
+    //         String(p.weightPerUnit !== undefined ? p.weightPerUnit : 0)
+    //     );
+    // };
     const startInlineEdit = (p: Product) => {
         setEditingId(p.id);
         setEditPrice((p.pricePerUnit / 100).toFixed(2));
         setEditQuantity(String(p.quantityInStock));
-        setEditWeight(
-            String(p.weightPerUnit !== undefined ? p.weightPerUnit : 0)
+        setEditTotalWeight(
+            String(
+                (p.weightPerUnit !== undefined ? p.weightPerUnit : 0) *
+                    p.quantityInStock
+            )
         );
     };
+
+    // const saveInlineEdit = async (productId: number) => {
+    //     setIsSavingInline(true);
+    //     try {
+    //         const priceCents = Math.round(parseFloat(editPrice || "0") * 100);
+    //         const qty = parseInt(editQuantity || "0", 10);
+    //         const weight = Math.max(0, parseFloat(editWeight || "0"));
+
+    //         await fetchWithAuth(`/api/products/${productId}`, {
+    //             method: "PATCH",
+    //             body: JSON.stringify({
+    //                 pricePerUnit: priceCents,
+    //                 quantityInStock: qty,
+    //                 weightPerUnit: weight,
+    //             }),
+    //         });
+
+    //         await onRefreshData();
+    //         setEditingId(null);
+    //     } catch (err: any) {
+    //         setFormError(err.message || "Failed to update item");
+    //     } finally {
+    //         setIsSavingInline(false);
+    //     }
+    // };
 
     const saveInlineEdit = async (productId: number) => {
         setIsSavingInline(true);
         try {
             const priceCents = Math.round(parseFloat(editPrice || "0") * 100);
             const qty = parseInt(editQuantity || "0", 10);
-            const weight = Math.max(0, parseFloat(editWeight || "0"));
+            const totalWeight = Math.max(0, parseFloat(editTotalWeight || "0"));
+            const weight = qty > 0 ? totalWeight / qty : 0; // sent as weightPerUnit — payload key unchanged
 
             await fetchWithAuth(`/api/products/${productId}`, {
                 method: "PATCH",
@@ -536,7 +575,8 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({
         setFormCodeNo(generateProductCode("Clothes"));
         setFormPriceDollars("120.00");
         setFormQuantity("12");
-        setFormWeight("0.50");
+        // setFormWeight("0.50");
+        setFormTotalWeight("2.00");
         setFormIsAvailable(true);
         setFormImageUrls([""]);
         setFormError(null);
@@ -552,8 +592,14 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({
         setFormCategory(p.category);
         setFormPriceDollars((p.pricePerUnit / 100).toFixed(2));
         setFormQuantity(String(p.quantityInStock));
-        setFormWeight(
-            String(p.weightPerUnit !== undefined ? p.weightPerUnit : 0)
+        // setFormWeight(
+        //     String(p.weightPerUnit !== undefined ? p.weightPerUnit : 0)
+        // );
+        setFormTotalWeight(
+            String(
+                (p.weightPerUnit !== undefined ? p.weightPerUnit : 0) *
+                    p.quantityInStock
+            )
         );
         setFormIsAvailable(p.isAvailable);
         setFormImageUrls(p.images.length > 0 ? p.images : [""]);
@@ -572,7 +618,9 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({
                 parseFloat(formPriceDollars || "0") * 100
             );
             const qty = parseInt(formQuantity || "0", 10);
-            const weight = Math.max(0, parseFloat(formWeight || "0"));
+            // const weight = Math.max(0, parseFloat(formWeight || "0"));
+            const totalWeight = Math.max(0, parseFloat(formTotalWeight || "0"));
+            const weight = qty > 0 ? totalWeight / qty : 0;
             const validImages = formImageUrls.filter(
                 (url) => url.trim().length > 0
             );
@@ -1093,15 +1141,17 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({
                         </div>
                     </div>
 
-                    {/* Interactive Inventory Table with requirement checks:
-              - compact table view
-              - small constrained image thumbnails (neat & readable)
-              - weight column (weight per unit in kg)
-              - total weight column (weight per unit * total units in stock)
-              - calculated "Subtotal" column (Price per Unit * Quantity in Stock)
-              - Low Stock Indicator (soft red highlight when stock < 5)
-              - Table Footer: "Final Grand Total" row summing all item subtotals, units, and total weight
-              - Inline Editing for price, quantity, and weight per unit
+                    {/*
+         Interactive Inventory Table with requirement checks:
+    - compact table view
+    - small constrained image thumbnails (neat & readable)
+    - weight column (weight per unit in kg — read-only, derived as Total Weight ÷ Quantity)
+    - total weight column (weight per unit * total units in stock — this is the editable
+      input; weight per unit is always derived from it, never entered directly)
+    - calculated "Subtotal" column (Price per Unit * Quantity in Stock)
+    - Low Stock Indicator (soft red highlight when stock < 5)
+    - Table Footer: "Final Grand Total" row summing all item subtotals, units, and total weight
+    - Inline Editing for price, quantity, and total weight (per-unit weight auto-derived)
           */}
                     <div className="bg-white rounded-xl border border-stone-200 shadow-sm overflow-hidden">
                         <div className="overflow-x-auto">
@@ -1315,7 +1365,7 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({
                                                     </td>
 
                                                     {/* Weight Per Unit (supports inline edit) */}
-                                                    <td className="py-2.5 px-4 text-right whitespace-nowrap font-mono">
+                                                    {/* <td className="py-2.5 px-4 text-right whitespace-nowrap font-mono">
                                                         {isEditing ? (
                                                             <div className="flex items-center justify-end gap-1">
                                                                 <input
@@ -1359,16 +1409,107 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({
                                                                 kg
                                                             </button>
                                                         )}
+                                                    </td> */}
+                                                    {/* Weight Per Unit (read-only during edit — derived from Total Weight ÷ Quantity) */}
+                                                    <td className="py-2.5 px-4 text-right whitespace-nowrap font-mono">
+                                                        {isEditing ? (
+                                                            <span className="text-stone-500 text-[11px]">
+                                                                {(() => {
+                                                                    const qtyNum =
+                                                                        parseInt(
+                                                                            editQuantity ||
+                                                                                "0",
+                                                                            10
+                                                                        );
+                                                                    const totalNum =
+                                                                        parseFloat(
+                                                                            editTotalWeight ||
+                                                                                "0"
+                                                                        );
+                                                                    const perUnit =
+                                                                        qtyNum >
+                                                                        0
+                                                                            ? totalNum /
+                                                                              qtyNum
+                                                                            : 0;
+                                                                    return `${perUnit.toFixed(
+                                                                        2
+                                                                    )} kg`;
+                                                                })()}
+                                                            </span>
+                                                        ) : (
+                                                            <button
+                                                                onClick={() =>
+                                                                    startInlineEdit(
+                                                                        product
+                                                                    )
+                                                                }
+                                                                className="text-stone-700 hover:text-amber-700 hover:underline cursor-pointer"
+                                                                title="Click to quick edit weight"
+                                                            >
+                                                                {(
+                                                                    product.weightPerUnit ||
+                                                                    0
+                                                                ).toFixed(
+                                                                    2
+                                                                )}{" "}
+                                                                kg
+                                                            </button>
+                                                        )}
                                                     </td>
 
                                                     {/* Total Weight: weight per unit * total unit in the stock */}
-                                                    <td className="py-2.5 px-4 text-right font-mono font-medium text-stone-800 whitespace-nowrap">
+                                                    {/* <td className="py-2.5 px-4 text-right font-mono font-medium text-stone-800 whitespace-nowrap">
                                                         <span className="bg-amber-50/70 dark:bg-amber-950/60 border border-amber-200/60 dark:border-amber-700/70 px-2 py-0.5 rounded text-[11px] text-stone-900 dark:text-amber-100">
                                                             {rowTotalWeight.toFixed(
                                                                 2
                                                             )}{" "}
                                                             kg
                                                         </span>
+                                                    </td> */}
+
+                                                    {/* Total Weight: editable — weight per unit is derived from this ÷ quantity */}
+                                                    <td className="py-2.5 px-4 text-right font-mono font-medium text-stone-800 whitespace-nowrap">
+                                                        {isEditing ? (
+                                                            <div className="flex items-center justify-end gap-1">
+                                                                <input
+                                                                    type="number"
+                                                                    step="0.01"
+                                                                    min="0"
+                                                                    value={
+                                                                        editTotalWeight
+                                                                    }
+                                                                    onChange={(
+                                                                        e
+                                                                    ) =>
+                                                                        setEditTotalWeight(
+                                                                            e
+                                                                                .target
+                                                                                .value
+                                                                        )
+                                                                    }
+                                                                    className="w-20 px-1.5 py-1 text-right bg-white dark:bg-stone-800 border border-amber-400 text-stone-900 dark:text-stone-100 rounded focus:outline-none text-xs font-mono"
+                                                                />
+                                                                <span className="text-stone-400 text-[10px]">
+                                                                    kg
+                                                                </span>
+                                                            </div>
+                                                        ) : (
+                                                            <button
+                                                                onClick={() =>
+                                                                    startInlineEdit(
+                                                                        product
+                                                                    )
+                                                                }
+                                                                className="bg-amber-50/70 dark:bg-amber-950/60 border border-amber-200/60 dark:border-amber-700/70 px-2 py-0.5 rounded text-[11px] text-stone-900 dark:text-amber-100 hover:text-amber-700 cursor-pointer"
+                                                                title="Click to quick edit total weight"
+                                                            >
+                                                                {rowTotalWeight.toFixed(
+                                                                    2
+                                                                )}{" "}
+                                                                kg
+                                                            </button>
+                                                        )}
                                                     </td>
 
                                                     {/* Calculated Subtotal Column */}
@@ -2583,7 +2724,7 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({
                                 </div>
                             </div>
 
-                            <div className="grid grid-cols-3 gap-3">
+                            {/* <div className="grid grid-cols-3 gap-3">
                                 <div>
                                     <label className="block text-stone-700 dark:text-stone-200 font-medium mb-1">
                                         Price / Unit (₦) *
@@ -2635,6 +2776,78 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({
                                         placeholder="0.75"
                                         className="w-full px-3 py-2 bg-stone-50 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 text-stone-900 dark:text-stone-100 placeholder:text-stone-400 rounded-lg font-mono focus:outline-none focus:ring-1 focus:ring-amber-500 text-sm"
                                     />
+                                </div>
+                            </div> */}
+                            <div className="grid grid-cols-3 gap-3">
+                                <div>
+                                    <label className="block text-stone-700 dark:text-stone-200 font-medium mb-1">
+                                        Price / Unit (₦) *
+                                    </label>
+                                    <input
+                                        type="number"
+                                        step="0.01"
+                                        min="0"
+                                        required
+                                        value={formPriceDollars}
+                                        onChange={(e) =>
+                                            setFormPriceDollars(e.target.value)
+                                        }
+                                        placeholder="145.00"
+                                        className="w-full px-3 py-2 bg-stone-50 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 text-stone-900 dark:text-stone-100 placeholder:text-stone-400 rounded-lg font-mono focus:outline-none focus:ring-1 focus:ring-amber-500 text-sm"
+                                    />
+                                </div>
+
+                                <div>
+                                    <label className="block text-stone-700 dark:text-stone-200 font-medium mb-1">
+                                        Stock Units *
+                                    </label>
+                                    <input
+                                        type="number"
+                                        min="0"
+                                        required
+                                        value={formQuantity}
+                                        onChange={(e) =>
+                                            setFormQuantity(e.target.value)
+                                        }
+                                        placeholder="15"
+                                        className="w-full px-3 py-2 bg-stone-50 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 text-stone-900 dark:text-stone-100 placeholder:text-stone-400 rounded-lg font-mono focus:outline-none focus:ring-1 focus:ring-amber-500 text-sm"
+                                    />
+                                </div>
+
+                                <div>
+                                    <label className="block text-stone-700 dark:text-stone-200 font-medium mb-1">
+                                        Total Weight (kg) *
+                                    </label>
+                                    <input
+                                        type="number"
+                                        step="0.01"
+                                        min="0"
+                                        required
+                                        value={formTotalWeight}
+                                        onChange={(e) =>
+                                            setFormTotalWeight(e.target.value)
+                                        }
+                                        placeholder="6.00"
+                                        className="w-full px-3 py-2 bg-stone-50 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 text-stone-900 dark:text-stone-100 placeholder:text-stone-400 rounded-lg font-mono focus:outline-none focus:ring-1 focus:ring-amber-500 text-sm"
+                                    />
+                                    <span className="text-[10px] text-stone-400 dark:text-stone-500">
+                                        {(() => {
+                                            const qtyNum = parseInt(
+                                                formQuantity || "0",
+                                                10
+                                            );
+                                            const totalNum = parseFloat(
+                                                formTotalWeight || "0"
+                                            );
+                                            const perUnit =
+                                                qtyNum > 0
+                                                    ? totalNum / qtyNum
+                                                    : 0;
+                                            return `≈ ${perUnit.toFixed(
+                                                2
+                                            )} kg / unit`;
+                                        })()}
+                                    </span>
                                 </div>
                             </div>
 
